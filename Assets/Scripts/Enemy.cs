@@ -7,9 +7,12 @@ public class Enemy : MonoBehaviour
     private Transform[]        wayPoints;            // 이동 경로 정보
     private int                currentIndex = 0;    // 현재 목표지점 인덱스
     private Movement2D         movement2D;          // 오브젝트 이동 제어
+    private EnemySpawner       enemySpawner;
     
-    public void Setup(Transform[] wayPoints) {
+    public void Setup(EnemySpawner enemySpawner, Transform[] wayPoints) 
+    {
         movement2D = GetComponent<Movement2D>();
+        this.enemySpawner = enemySpawner;
 
         // 적 이동 경로 WayPoints 정보 설정
         wayPointCount = wayPoints.Length;
@@ -55,7 +58,12 @@ public class Enemy : MonoBehaviour
         }
         // 현재 위치가 마지막 wayPoints이면
         else {
-            Destroy(gameObject);
+            OnDie();
         }
+    }
+
+    public void OnDie()
+    {
+        enemySpawner.DestroyEnemy(this);
     }
 }
